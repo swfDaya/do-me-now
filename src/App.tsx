@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './App.css';
 
 import plus from './images/plus.svg'
@@ -20,6 +20,18 @@ const App: React.FC = () => {
   const doneEachRef = useRef<HTMLInputElement>(null);
 
   const [ newTask, setNewTask ] = useState<string>("");
+
+  const [ textBoxRefHeight, setTextBoxRefRefHeight ] = useState<string>()
+  const [ listEachRefHeight, setListEachRefHeight ] = useState<string>()
+  const [ doneEachRefHeight, setdoneEachRefHeight ] = useState<string>()
+
+  useEffect(
+    () => {
+      setTextBoxRefRefHeight(textBoxRef.current?.getBoundingClientRect().height.toString())
+      setListEachRefHeight(listEachRef.current?.getBoundingClientRect().height.toString())
+      setdoneEachRefHeight(doneEachRef.current?.getBoundingClientRect().height.toString())
+    }, []
+  )
 
   interface toDo {
     id: number,
@@ -137,7 +149,7 @@ const App: React.FC = () => {
           <div
           className ='app-to-be-done-add-btn to-center'
           style={{
-            minWidth : textBoxRef.current?.clientHeight,
+            minWidth: textBoxRef.current?.getBoundingClientRect().height ? textBoxRef.current?.getBoundingClientRect().height : textBoxRefHeight,
           }}
           >
             <img
@@ -163,7 +175,7 @@ const App: React.FC = () => {
                       <div
                       className ='app-to-be-done-list-each-task-id to-center'
                       style={{
-                        minWidth: listEachRef.current?.clientHeight,
+                        minWidth: listEachRef.current?.getBoundingClientRect().height ? listEachRef.current?.getBoundingClientRect().height : listEachRefHeight,
                       }}
                       >
                         <>{item.id}.</>
@@ -221,7 +233,9 @@ const App: React.FC = () => {
                       <div
                       className ='app-done-list-each-task-id to-center'
                       style={{
-                        minWidth : doneEachRef.current?.clientHeight,
+                        minWidth: doneEachRef.current?.getBoundingClientRect().height ? doneEachRef.current?.getBoundingClientRect().height : doneEachRefHeight,
+                        // minWidth: doneEachRef.current?.clientHeight,
+                        // minWidth : doneEachRefHeight+'!important' ? doneEachRefHeight : doneEachRef.current?.clientHeight+'!important',
                       }}
                       >
                         <>{item.id}.</>
